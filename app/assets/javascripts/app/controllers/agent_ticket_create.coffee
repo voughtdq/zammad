@@ -23,6 +23,10 @@ class App.TicketCreate extends App.Controller
     'email-out': {
       icon: 'email',
       label: __('Send Email')
+    },
+    'internal': {
+      icon: 'lock',
+      label: __('Internal')
     }
   }
 
@@ -119,6 +123,11 @@ class App.TicketCreate extends App.Controller
         article: 'email'
         title:   __('Email')
         screen:  'create_email_out'
+      'internal':
+        sender: 'Agent'
+        article: 'note'
+        title: __('Internal')
+        screen: 'create_internal'
     @articleAttributes = articleSenderTypeMap[type]
 
     # update form
@@ -489,7 +498,7 @@ class App.TicketCreate extends App.Controller
 
     # find sender_id
     sender = App.TicketArticleSender.findByAttribute('name', @articleAttributes['sender'])
-    type   = App.TicketArticleType.findByAttribute('name', @articleAttributes['article'])
+    type   = App.TicketArticleType.findByAttribute('name', @articleAttributes['article']) 
 
     if params.group_id
       group  = App.Group.find(params.group_id)
@@ -529,6 +538,10 @@ class App.TicketCreate extends App.Controller
         form_id:      @formId
         content_type: 'text/html'
       }
+
+      if @currentChannel() is 'internal'
+        params.internal = true
+        params.article.internal = true
 
       # add security params
       if @securityOptionsShown()

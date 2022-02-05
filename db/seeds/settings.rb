@@ -925,6 +925,7 @@ Setting.create_if_not_exists(
           'phone-in'  => '1. Phone inbound',
           'phone-out' => '2. Phone outbound',
           'email-out' => '3. Email outbound',
+          'internal'  => '4. Internal',
         },
       },
     ],
@@ -953,11 +954,12 @@ Setting.create_if_not_exists(
           'phone-in'  => '1. Phone inbound',
           'phone-out' => '2. Phone outbound',
           'email-out' => '3. Email outbound',
+          'internal'  => '4. Internal',
         },
       },
     ],
   },
-  state:       %w[phone-in phone-out email-out],
+  state:       %w[phone-in phone-out email-out internal],
   preferences: {
     permission: ['admin.ui']
   },
