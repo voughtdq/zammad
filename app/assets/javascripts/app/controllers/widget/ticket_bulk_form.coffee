@@ -107,7 +107,7 @@ class App.TicketBulkForm extends App.Controller
     @makeSpaceForTableRows()
 
     # need a delay because of the click event
-    setTimeout ( => @$('.textarea.form-group textarea').focus() ), 0
+    setTimeout ( => @$('.textarea.form-group textarea').trigger('focus') ), 0
 
   reset: =>
     @cancel()
@@ -205,7 +205,7 @@ class App.TicketBulkForm extends App.Controller
 
         App.Event.trigger('notify', {
           type: 'error'
-          msg: App.i18n.translateContent('Bulk action stopped %s!', errorString)
+          msg: App.i18n.translateContent('Bulk action stopped by error(s): %s!', errorString)
         })
         @cancel()
         return

@@ -5,7 +5,7 @@
 // the compiled file.
 //
 
-//= require ./app/lib/core/jquery-2.2.1.js
+//= require ./app/lib/core/jquery-3.6.0.js
 //= require ./app/lib/core/jquery-ui-1.11.4.js
 //= require ./app/lib/core/underscore-1.8.3.js
 
@@ -70,9 +70,9 @@ Date.prototype.getWeek = function() {
 
 function difference(object1, object2) {
   var changes = {};
-  for (var name in object1) {
-    if (name in object2) {
-      if (_.isObject(object2[name]) && !_.isArray(object2[name])) {
+  _.uniq(Object.keys(object1).concat(Object.keys(object2))).forEach(function(name) {
+    if (name in object1 && name in object2) {
+      if (_.isObject(object1[name]) && !_.isArray(object1[name]) && _.isObject(object2[name]) && !_.isArray(object2[name])) {
         var diff = difference(object1[name], object2[name]);
         if (!_.isEmpty(diff)) {
             changes[name] = diff;
@@ -80,8 +80,10 @@ function difference(object1, object2) {
       } else if (!_.isEqual(object1[name], object2[name])) {
         changes[name] = object2[name];
       }
+    } else {
+      changes[name] = object2[name]
     }
-  }
+  })
   return changes;
 }
 
@@ -255,6 +257,12 @@ jQuery.fn.extend( {
       var multiple    = $elem.prop('multiple');
       var multiselect = multiple && $elem.hasClass('multiselect');
 
+      // in jQuery 3,  select-multiple with nothing selected returns an empty array
+      // https://jquery.com/upgrade-guide/3.0/#breaking-change-select-multiple-with-nothing-selected-returns-an-empty-array
+      if (multiple === true && typeof val === 'object' && val.length == 0){
+        val = null;
+      }
+
       var result;
       if ( val == null ) {
         // be sure that also null values are transferred
@@ -265,7 +273,7 @@ jQuery.fn.extend( {
           result = null
         }
       }
-      else if ( jQuery.isArray( val ) ) {
+      else if ( Array.isArray( val ) ) {
         result = jQuery.map( val, function( val ) {
           return { name: elem.name, value: val.replace( rCRLF, "\r\n" ), type: type, multiselect: multiselect };
         } );
@@ -279,6 +287,6 @@ jQuery.fn.extend( {
 } );
 
 // start application
-jQuery(function(){
+(function(){
   new App.Run();
-});
+})();

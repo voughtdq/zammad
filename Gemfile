@@ -158,8 +158,6 @@ group :development, :test do
 
   # app boottime improvement
   gem 'spring'
-  gem 'spring-commands-rspec'
-  gem 'spring-commands-testunit'
 
   # debugging
   gem 'byebug'
@@ -176,11 +174,6 @@ group :development, :test do
 
   # for testing Pundit authorisation policies in RSpec
   gem 'pundit-matchers'
-
-  # code coverage
-  gem 'coveralls', require: false
-  gem 'simplecov'
-  gem 'simplecov-rcov'
 
   # UI tests w/ Selenium
   gem 'capybara'
@@ -205,9 +198,6 @@ group :development, :test do
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
-
-  # changelog generation
-  gem 'github_changelog_generator'
 
   # generate random test data
   gem 'factory_bot_rails'
